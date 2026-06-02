@@ -3,10 +3,12 @@ import json
 import sys
 from pathlib import Path
 
-import _bootstrap  # noqa: F401
 import chromadb
 import ollama
-from mlx_utils import PROJECT_ROOT, run_mlx
+try:
+    from scripts.mlx_utils import PROJECT_ROOT, run_mlx
+except ModuleNotFoundError:
+    from mlx_utils import PROJECT_ROOT, run_mlx
 
 CHROMA_DIR = PROJECT_ROOT / "chroma"
 COLLECTION_NAME = "support_faqs"

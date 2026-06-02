@@ -49,7 +49,7 @@ Everything below is **in the repo** so a new user can clone and run without crea
 |----------|----------|---------|
 | **Pre-trained LoRA adapters** | `adapters-llama3-1b/adapters.safetensors` | Use the AcornDesk-tuned model immediately |
 | **Training data** | `data/support/*.jsonl` | Re-train or fine-tune on your own machine |
-| **FAQ documents** | `docs/faqs/*.txt` (7 files) | RAG knowledge base (fictional AcornDesk policies) |
+| **FAQ documents** | `docs/faqs/*.txt` (8 files) | RAG knowledge base (fictional AcornDesk policies) |
 | **Eval questions** | `data/eval/test_prompts.txt` | Optional four-mode comparison |
 | **Scripts** | `scripts/` | Index, query, evaluate |
 
@@ -69,7 +69,7 @@ Everything below is **in the repo** so a new user can clone and run without crea
 Use the adapters and FAQs already in the repo. You do **not** need to train.
 
 ```bash
-git clone https://github.com/purvender/apple-silicon-lora-rag-support-assistant.git
+git clone https://github.com/purvenderhooda/apple-silicon-lora-rag-support-assistant.git
 cd apple-silicon-lora-rag-support-assistant
 
 ollama pull nomic-embed-text
@@ -140,11 +140,19 @@ apple-silicon-lora-rag-support-assistant/
 ├── LICENSE
 ├── requirements.txt
 ├── .gitignore
+├── agent/
+│   ├── types.py
+│   ├── memory.py
+│   ├── prompts.py
+│   ├── router.py
+│   ├── tools.py
+│   └── orchestrator.py
 ├── data/
 │   ├── support/          # LoRA train / valid / test JSONL
 │   └── eval/
 │       ├── test_prompts.txt
-│       └── expected_sources.jsonl
+│       ├── expected_sources.jsonl
+│       └── agent_scenarios.json
 ├── docs/
 │   ├── LEARNING.md
 │   ├── TROUBLESHOOTING.md
@@ -154,6 +162,8 @@ apple-silicon-lora-rag-support-assistant/
 │   ├── mlx_utils.py
 │   ├── rag_index.py
 │   ├── rag_query.py
+│   ├── agent_chat.py
+│   ├── eval_agent.py
 │   ├── eval_compare.py
 │   ├── check_retrieval.py
 │   └── smoke_test.sh
@@ -222,6 +232,39 @@ Fast retrieval-only check (no MLX, ~seconds):
 python scripts/check_retrieval.py
 # or
 python scripts/eval_compare.py --check-retrieval
+```
+
+## Agentic RAG (v1)
+
+This project now includes a minimal agent orchestration layer on top of the original RAG pipeline.
+
+### What the agent adds
+
+- intent classification
+- tool-based workflow
+- lightweight conversation memory
+- clarification when retrieval is weak
+- escalation path for high-risk or human-handoff requests
+
+### New files
+
+- `agent/router.py` — intent routing
+- `agent/tools.py` — retrieval, summarization, escalation, response drafting
+- `agent/memory.py` — issue summary and attempted steps
+- `agent/orchestrator.py` — main workflow
+- `scripts/agent_chat.py` — CLI entrypoint for the agent
+- `scripts/eval_agent.py` — simple evaluation harness
+
+### Run the agent
+
+```bash
+python scripts/agent_chat.py "I didn't receive the password reset email"
+```
+
+### Evaluate the agent
+
+```bash
+python scripts/eval_agent.py
 ```
 
 ## Hands-on exercises

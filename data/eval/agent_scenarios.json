@@ -1,0 +1,22 @@
+[
+  {
+    "name": "faq_refund",
+    "query": "Can I get a refund for my annual plan?",
+    "expected_intent": "policy_process"
+  },
+  {
+    "name": "password_reset_issue",
+    "query": "I did not receive the password reset email after trying twice.",
+    "expected_intent": "troubleshooting"
+  },
+  {
+    "name": "ask_human",
+    "query": "I want to speak to a human agent. This is urgent.",
+    "expected_intent": "escalation"
+  },
+  {
+    "name": "conversation_summary",
+    "query": "Can you summarize what we have tried so far?",
+    "expected_intent": "summarization"
+  }
+]
