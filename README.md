@@ -1,5 +1,74 @@
 # Apple Silicon Agentic RAG Support Assistant
 
+## What you are building
+
+This project builds a **fictional AcornDesk support assistant**.
+
+The assistant answers support questions using local FAQ documents and runs fully on-device on **Apple Silicon Mac**.
+
+The project teaches three main ideas:
+
+- **Fine-tuning** changes how the model speaks
+- **RAG** changes what knowledge the model can access
+- **Agentic workflow** changes what the system does before answering
+
+---
+
+## Big picture
+
+This project is easiest to understand as five stages.
+
+### Stage 1 — Base model only
+
+The raw base model answers from its general training.
+
+It may sound fluent, but it does not know your exact support policies.
+
+Use this stage to understand the baseline.
+
+### Stage 2 — Tuned model only
+
+The LoRA-tuned model is trained on support-style examples.
+
+It becomes more polite, more structured, and more consistent in support tone.
+
+But it still may not know the exact contents of your local FAQ files.
+
+### Stage 3 — RAG with retrieval
+
+The system now searches your FAQ documents before answering.
+
+This gives the model access to local, editable knowledge.
+
+This is where factual grounding starts.
+
+### Stage 4 — Tuned RAG
+
+This combines the best parts of Stage 2 and Stage 3.
+
+The assistant now has both:
+
+- support tone
+- document grounding
+
+For many beginner projects, this is the most useful standard setup.
+
+### Stage 5 — Agentic RAG
+
+The system adds a simple reasoning layer before answering.
+
+Now it can do things like:
+
+- detect whether a question is troubleshooting or policy related
+- choose retrieval
+- summarize context
+- ask for clarification
+- escalate when needed
+
+This makes the system feel more like a real support workflow.
+
+---
+
 A local, beginner-friendly customer support assistant for macOS Apple Silicon using:
 
 - **MLX LoRA fine-tuning**
