@@ -288,8 +288,8 @@ ollama
 ### Step 1 — Clone the repository
 
 ```bash
-git clone https://github.com/purvender/apple-silicon-agentic-rag-support-assistant.git
-cd apple-silicon-agentic-rag-support-assistant
+git clone https://github.com/purvender/agentic-rag-support-assistant.git
+cd agentic-rag-support-assistant
 ```
 
 ### Step 2 — Create a Python virtual environment
