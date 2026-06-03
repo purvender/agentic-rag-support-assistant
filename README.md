@@ -18,15 +18,15 @@ This repository is a learning project and implementation guide for a **local sup
 
 It runs fully on-device on **Apple Silicon Mac** and demonstrates three important ideas:
 
-1. **Fine-tuning** for response style and tone  
-2. **RAG** for factual grounding from local documents  
-3. **Agentic workflow** for simple decision-making before answering  
+1. **Fine-tuning** for response style and tone
+2. **RAG** for factual grounding from local documents
+3. **Agentic workflow** for simple decision-making before answering
 
 In simple words:
 
-- the model learns **how to talk** using LoRA fine-tuning,
-- the system learns **what to answer** using FAQ retrieval,
-- the agent layer learns **what to do next** using routing and tools.
+- the model learns **how to talk** using LoRA fine-tuning
+- the system learns **what to answer** using FAQ retrieval
+- the agent layer learns **what to do next** using routing and tools
 
 ---
 
@@ -38,11 +38,11 @@ A plain RAG system is better because it retrieves real documents before answerin
 
 An **agentic RAG** system goes one step further:
 
-- it can detect what kind of request the user has,
-- choose the right tool,
-- ask for clarification,
-- summarize the conversation,
-- or escalate to a human path when needed.
+- it can detect what kind of request the user has
+- choose the right tool
+- ask for clarification
+- summarize the conversation
+- or escalate to a human path when needed
 
 This repository is designed so a beginner can understand that journey step by step.
 
@@ -54,13 +54,13 @@ This repository is designed so a beginner can understand that journey step by st
 
 Simple meaning:
 
-1. Read the user question.
-2. Search the knowledge base.
-3. Pick the most relevant text.
-4. Put that text into the prompt.
-5. Let the model answer using that context.
+1. Read the user question
+2. Search the knowledge base
+3. Pick the most relevant text
+4. Put that text into the prompt
+5. Let the model answer using that context
 
-That helps the model answer using **real project documents** instead of only guessing from training.
+That helps the model answer using **real project documents** instead of only guessing from training.[web:1428]
 
 ---
 
@@ -155,9 +155,7 @@ This project builds a **fictional AcornDesk support assistant** that answers fro
 
 ---
 
-## What is included in the repo
-
-Everything below is included so a new user can clone and run the project quickly:
+## Repository contents
 
 | Included | Location | Purpose |
 |----------|----------|---------|
@@ -169,14 +167,12 @@ Everything below is included so a new user can clone and run the project quickly
 | Scripts | `scripts/` | Index, query, evaluate |
 | Agent code | `agent/` | Routing, tools, memory, orchestration |
 
-### Not stored in GitHub
-
-These are created locally on your machine:
+### Generated locally
 
 | Artifact | Why |
 |----------|-----|
 | `chroma/` | Local vector index generated from FAQs |
-| `.venv/` | Your local Python environment |
+| `.venv/` | Local Python environment |
 | `compare_results.md` | Optional local evaluation output |
 | Base model weights | Downloaded locally by MLX |
 
@@ -200,11 +196,11 @@ Follow these steps in order.
 
 ### Step 0 — Install Ollama
 
-Ollama can be installed on macOS either by downloading the app or by using the install script.
+Install Ollama on macOS.
 
 Option A — download the macOS app:
 
-- https://ollama.com/download/mac
+- [Download Ollama for macOS](https://ollama.com/download/mac)
 
 Option B — install from terminal:
 
@@ -212,15 +208,13 @@ Option B — install from terminal:
 curl -fsSL https://ollama.com/install.sh | sh
 ```
 
-After installing, open the Ollama app once so the local service starts.
+After installing, open the Ollama app once so the local service starts.[web:1371][web:1373]
 
-You can check that the CLI is available with:
+You can verify the CLI is available with:
 
 ```bash
 ollama
 ```
-
-If you see the Ollama interface or help output, the CLI is installed correctly.
 
 ### Step 1 — Clone the repository
 
@@ -248,7 +242,7 @@ pip install -r requirements.txt
 ollama pull nomic-embed-text
 ```
 
-### Step 5 — Verify the Ollama model is available
+### Step 5 — Verify Ollama setup
 
 ```bash
 ollama list
@@ -275,13 +269,13 @@ python scripts/rag_index.py
 
 This reads the FAQ files, creates embeddings, and stores them in ChromaDB.
 
-### Step 8 — Run a plain RAG query
+### Step 8 — Run plain RAG
 
 ```bash
 python scripts/rag_query.py "Can I get a refund for my annual plan?"
 ```
 
-### Step 9 — Run the agent workflow
+### Step 9 — Run agentic RAG
 
 ```bash
 python scripts/agent_chat.py "I did not receive my password reset email"
@@ -298,7 +292,7 @@ python scripts/eval_agent.py
 
 ## Quick start summary
 
-If you just want the shortest working path, use these commands:
+If you want the shortest working path, use these commands:
 
 ```bash
 git clone https://github.com/purvender/apple-silicon-agentic-rag-support-assistant.git
@@ -391,34 +385,6 @@ python scripts/rag_query.py "Your question here"
 
 ---
 
-## Learning path
-
-This repository is easiest to understand if you run it in this order:
-
-### Stage 1 — Understand the base model
-
-Learn how the base model answers without retrieval.
-
-### Stage 2 — Understand the tuned model
-
-Learn how LoRA changes style and support tone.
-
-### Stage 3 — Understand RAG
-
-Learn how document retrieval improves factual grounding.
-
-### Stage 4 — Understand tuned RAG
-
-Learn how style + retrieval work together.
-
-### Stage 5 — Understand agentic RAG
-
-Learn how the system decides what to do before answering.
-
-This order helps you understand each layer one by one instead of mixing everything at once.
-
----
-
 ## End-to-end examples
 
 This section shows the same support problem in different modes so you can clearly see what each layer adds.
@@ -428,8 +394,6 @@ These are **teaching examples**. Actual outputs may vary slightly.
 ---
 
 ### 1. Base model only
-
-This is the raw base model without LoRA and without RAG.
 
 **User query**
 
@@ -443,17 +407,6 @@ Can I get a refund for my annual plan?
 User query -> base model answers from general knowledge
 ```
 
-**What this mode is good for**
-
-- understanding the baseline
-- seeing how the untuned model behaves
-
-**Expected behavior**
-
-- may sound generic
-- may not follow your support style
-- may not know your exact refund rules
-
 **Example answer**
 
 ```text
@@ -463,8 +416,6 @@ Refund eligibility depends on the company policy and your purchase terms. You ma
 ---
 
 ### 2. Tuned model only
-
-This uses the LoRA-tuned model, but still no RAG.
 
 **User query**
 
@@ -478,16 +429,6 @@ Can I get a refund for my annual plan?
 User query -> tuned model answers using learned support tone
 ```
 
-**What this mode is good for**
-
-- seeing the effect of fine-tuning
-- checking support tone and structure
-
-**Expected behavior**
-
-- sounds more polite and support-oriented
-- still may not know the exact policy unless it saw similar examples during training
-
 **Example answer**
 
 ```text
@@ -497,8 +438,6 @@ I can help with that. Refunds for annual plans usually depend on the refund wind
 ---
 
 ### 3. RAG with base model
-
-This uses retrieval, but not the tuned LoRA adapter.
 
 **User query**
 
@@ -511,16 +450,6 @@ Can I get a refund for my annual plan?
 ```text
 User query -> embed query -> search ChromaDB -> retrieve refund FAQ -> base model answers with context
 ```
-
-**What this mode is good for**
-
-- seeing the value of retrieval
-- checking whether the right document is found
-
-**Expected behavior**
-
-- more factually grounded
-- style may still be plain or generic
 
 **Example retrieved topic**
 
@@ -538,8 +467,6 @@ According to the refund FAQ, annual plans can be refunded only within the allowe
 
 ### 4. RAG with tuned model
 
-This combines retrieval with the LoRA-tuned support style.
-
 **User query**
 
 ```text
@@ -552,17 +479,6 @@ Can I get a refund for my annual plan?
 User query -> embed query -> search ChromaDB -> retrieve refund FAQ -> tuned model answers with context
 ```
 
-**What this mode is good for**
-
-- best non-agent baseline
-- combines support tone and factual grounding
-
-**Expected behavior**
-
-- clearer structure
-- support-friendly tone
-- more accurate document-based answer
-
 **Example answer**
 
 ```text
@@ -572,8 +488,6 @@ I checked the refund guidance for annual plans. If your purchase is still within
 ---
 
 ### 5. Agentic RAG with tuned model
-
-This is the upgraded mode with simple decision-making before the answer.
 
 **User query**
 
@@ -604,19 +518,6 @@ troubleshooting
 retrieve_kb(query) -> draft_final_response(context)
 ```
 
-**What this mode is good for**
-
-- understanding the agent layer
-- routing different request types
-- handling support workflows more naturally
-
-**Expected behavior**
-
-- identifies this as a troubleshooting issue
-- retrieves the relevant password FAQ
-- gives a step-by-step support answer
-- may escalate if the issue continues
-
 **Example answer**
 
 ```text
@@ -625,21 +526,7 @@ This looks like a password reset delivery issue. First, check your spam or promo
 
 ---
 
-## Why these examples matter
-
-These five examples teach the project step by step:
-
-1. **Base model** shows the raw starting point.
-2. **Tuned model** shows tone improvement.
-3. **RAG + base** shows factual grounding.
-4. **RAG + tuned** shows the best standard support flow.
-5. **Agentic RAG + tuned** shows decision-making on top of retrieval.
-
----
-
 ## How the plain RAG system works
-
-This is the original pipeline:
 
 ```text
 User question
@@ -651,13 +538,9 @@ User question
    -> return answer
 ```
 
-This is the **plain RAG support assistant**.
-
 ---
 
 ## How the agentic layer works
-
-This is the upgraded flow:
 
 ```text
 User question
@@ -672,8 +555,6 @@ User question
 
 ### Example intents
 
-The system can classify a question as:
-
 - `knowledge_base`
 - `troubleshooting`
 - `policy_process`
@@ -682,8 +563,6 @@ The system can classify a question as:
 - `unknown`
 
 ### Example tools
-
-The simple Python agent can call tools like:
 
 - `retrieve_kb(query)`
 - `classify_intent(query, history)`
@@ -696,8 +575,6 @@ The simple Python agent can call tools like:
 
 ## Why we use fine-tuning, RAG, and agentic RAG
 
-Each layer solves a different problem.
-
 | Layer | What it improves |
 |------|-------------------|
 | Fine-tuning | Tone, structure, support style |
@@ -709,8 +586,6 @@ Simple rule:
 - **Fine-tuning** teaches the model **how to answer**
 - **RAG** provides the content for **what to answer**
 - **Agentic workflow** decides **what to do next**
-
-That is the learning progression of this repository.
 
 ---
 
@@ -768,127 +643,15 @@ apple-silicon-agentic-rag-support-assistant/
 
 ---
 
-## File guide for beginners
-
-### `scripts/rag_index.py`
-
-Builds the ChromaDB vector index from the FAQ text files.
-
-### `scripts/rag_query.py`
-
-Runs the original plain RAG assistant.
-
-### `scripts/agent_chat.py`
-
-Runs the upgraded agentic workflow.
-
-### `scripts/eval_compare.py`
-
-Compares base vs tuned vs RAG combinations.
-
-### `scripts/eval_agent.py`
-
-Runs simple tests for the agent flow.
-
-### `agent/router.py`
-
-Decides what kind of request the user has.
-
-### `agent/tools.py`
-
-Contains the small tool functions the agent can call.
-
-### `agent/memory.py`
-
-Stores lightweight conversation state.
-
-### `agent/orchestrator.py`
-
-Main controller for the agent workflow.
-
----
-
-## FAQ documents
-
-The knowledge base lives in `docs/faqs/`.
-
-| File | Topic |
-|------|------|
-| `refunds.txt` | Annual refund window |
-| `billing.txt` | Invoices, billing email, plan changes |
-| `passwords.txt` | Password reset |
-| `trial_extensions.txt` | Trial extension, teammate limit |
-| `account_setup.txt` | Sign-up and verification |
-| `cancellation.txt` | Cancel, read-only period, data deletion |
-| `team_permissions.txt` | Invites, roles, permissions |
-| `support.txt` | How to contact support |
-
-If you edit any of these files, rebuild the index:
-
-```bash
-python scripts/rag_index.py
-```
-
----
-
-## Usage
-
-### Plain RAG usage
-
-Ask a support question:
-
-```bash
-python scripts/rag_query.py "Can I cancel my plan and still access my data?"
-```
-
-Use this mode if you want:
-
-- the simplest system
-- direct RAG behavior
-- easy debugging
-
-### Agent usage
-
-Ask a support question through the agent layer:
-
-```bash
-python scripts/agent_chat.py "I tried resetting my password twice and still didn't get the email."
-```
-
-Use this mode if you want:
-
-- intent detection
-- routing
-- summarization
-- basic escalation behavior
-- more realistic support workflows
-
----
-
 ## Evaluation
 
 ### Four-mode comparison
-
-This compares:
-
-- base only
-- tuned only
-- base + RAG
-- tuned + RAG
-
-Run:
 
 ```bash
 python scripts/eval_compare.py -o compare_results.md
 ```
 
-For a sample output, see:
-
-- `docs/example_compare_results.md`
-
 ### Retrieval-only check
-
-This checks retrieval quality quickly without full generation:
 
 ```bash
 python scripts/check_retrieval.py
@@ -896,122 +659,9 @@ python scripts/check_retrieval.py
 
 ### Agent evaluation
 
-This checks whether the agent chooses the expected intent for simple scenarios:
-
 ```bash
 python scripts/eval_agent.py
 ```
-
-Example scenario types:
-
-- FAQ question
-- troubleshooting issue
-- escalation request
-- summary request
-
----
-
-## Beginner learning path
-
-If you are new, use this order.
-
-### Step 1 — Start Ollama
-
-```bash
-ollama pull nomic-embed-text
-ollama list
-```
-
-### Step 2 — Build the vector index
-
-```bash
-python scripts/rag_index.py
-```
-
-### Step 3 — Run plain RAG
-
-```bash
-python scripts/rag_query.py "Can I get a refund for my annual plan?"
-```
-
-### Step 4 — Compare answer quality
-
-Read the examples in **End-to-end examples** and compare:
-
-- base model
-- tuned model
-- base + RAG
-- tuned + RAG
-- agentic RAG + tuned model
-
-### Step 5 — Run the agent
-
-```bash
-python scripts/agent_chat.py "I want to talk to a human about my billing issue."
-```
-
-### Step 6 — Read code in this order
-
-1. `scripts/rag_index.py`
-2. `scripts/rag_query.py`
-3. `agent/router.py`
-4. `agent/tools.py`
-5. `agent/orchestrator.py`
-
-That order makes the architecture easier to understand.
-
----
-
-## What changed from the original repo
-
-Originally, this project was mainly a **local LoRA + RAG support assistant**.
-
-Now it is being upgraded into a **local agentic RAG support assistant**.
-
-### Old version
-
-- retrieve FAQ
-- answer using retrieved context
-
-### New version
-
-- understand request type
-- choose next action
-- retrieve / summarize / escalate / clarify
-- then answer
-
-This is the key evolution in the repository.
-
----
-
-## Limitations
-
-This project is intentionally small and beginner-friendly.
-
-Current limitations:
-
-- fictional support domain only
-- simple local documents only
-- lightweight agent logic
-- no real ticketing backend
-- no production authentication or web UI
-- escalation is a stub, not a real helpdesk integration
-- retrieval is intentionally simple for learning clarity
-
----
-
-## Future improvements
-
-Possible next steps:
-
-- persistent conversation memory
-- better retrieval ranking
-- real issue history search
-- real ticket system integration
-- web UI or API layer
-- LangGraph migration for larger workflows
-- richer evaluation metrics
-- multi-turn troubleshooting flows
 
 ---
 
