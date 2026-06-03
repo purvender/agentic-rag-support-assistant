@@ -200,7 +200,7 @@ Follow these steps in order.
 
 ### Step 0 — Install Ollama
 
-Ollama can be installed on macOS by downloading the app or by using the install script.
+Ollama can be installed on macOS either by downloading the app or by using the install script.
 
 Option A — download the macOS app:
 
@@ -214,11 +214,13 @@ curl -fsSL https://ollama.com/install.sh | sh
 
 After installing, open the Ollama app once so the local service starts.
 
-You can verify the CLI is available with:
+You can check that the CLI is available with:
 
 ```bash
 ollama
 ```
+
+If you see the Ollama interface or help output, the CLI is installed correctly.
 
 ### Step 1 — Clone the repository
 
@@ -246,7 +248,7 @@ pip install -r requirements.txt
 ollama pull nomic-embed-text
 ```
 
-### Step 5 — Verify Ollama setup
+### Step 5 — Verify the Ollama model is available
 
 ```bash
 ollama list
@@ -296,7 +298,7 @@ python scripts/eval_agent.py
 
 ## Quick start summary
 
-If you want the shortest working path, use these commands:
+If you just want the shortest working path, use these commands:
 
 ```bash
 git clone https://github.com/purvender/apple-silicon-agentic-rag-support-assistant.git
@@ -913,7 +915,7 @@ Example scenario types:
 
 If you are new, use this order.
 
-### Step 1 — Install and start Ollama
+### Step 1 — Start Ollama
 
 ```bash
 ollama pull nomic-embed-text
