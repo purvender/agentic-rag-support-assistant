@@ -1,4 +1,4 @@
-# Apple Silicon Agentic RAG Support Assistant
+# Apple Silicon LoRA RAG Support Assistant
 
 A local, beginner-friendly customer support assistant for macOS Apple Silicon using:
 
@@ -6,9 +6,8 @@ A local, beginner-friendly customer support assistant for macOS Apple Silicon us
 - **Ollama embeddings**
 - **ChromaDB**
 - **RAG (Retrieval-Augmented Generation)**
-- a simple **agent orchestration layer**
 
-This project shows how to build a support bot that can answer questions from local FAQ files, speak in a support-friendly tone, and gradually grow from a plain RAG bot into a small **agentic RAG** system.
+This project shows how to build a support bot that can answer questions from local FAQ files and speak in a support-friendly tone.
 
 ---
 
@@ -16,17 +15,15 @@ This project shows how to build a support bot that can answer questions from loc
 
 This repository is a learning project and implementation guide for a **local support assistant**.
 
-It runs fully on-device on **Apple Silicon Mac** and demonstrates three important ideas:
+It runs fully on-device on **Apple Silicon Mac** and demonstrates two important ideas:
 
-1. **Fine-tuning** for response style and tone  
-2. **RAG** for factual grounding from local documents  
-3. **Agentic workflow** for simple decision-making before answering  
+1. **Fine-tuning** for response style and tone.
+2. **RAG** for factual grounding from local documents.
 
 In simple words:
 
 - the model learns **how to talk** using LoRA fine-tuning,
-- the system learns **what to answer** using FAQ retrieval,
-- the agent layer learns **what to do next** using routing and tools.
+- the system learns **what to answer** using FAQ retrieval.
 
 ---
 
@@ -35,13 +32,6 @@ In simple words:
 A plain LLM can sound fluent, but it may guess or hallucinate.
 
 A plain RAG system is better because it retrieves real documents before answering.
-
-An **agentic RAG** system goes one step further:
-- it can detect what kind of request the user has,
-- choose the right tool,
-- ask for clarification,
-- summarize the conversation,
-- or escalate to a human path when needed.
 
 This repository is designed so a beginner can understand that journey step by step.
 
@@ -53,40 +43,13 @@ This repository is designed so a beginner can understand that journey step by st
 
 Simple meaning:
 
-1. Read user question  
-2. Search the knowledge base  
-3. Pick the most relevant text  
-4. Put that text into the prompt  
-5. Let the model answer using that context  
+1. Read user question.
+2. Search the knowledge base.
+3. Pick the most relevant text.
+4. Put that text into the prompt.
+5. Let the model answer using that context.
 
 That helps the model answer using **real project documents** instead of only guessing from training.
-
----
-
-## What is agentic RAG?
-
-**Agentic RAG** means we add a small decision-making layer on top of RAG.[web:1319]
-
-Instead of always doing only this:
-
-```text
-question -> retrieve docs -> generate answer
-```
-
-the system can do this:
-
-```text
-question -> classify intent -> choose tool(s) -> retrieve / summarize / escalate / clarify -> generate answer
-```
-
-In this project, the agent layer is intentionally simple and beginner-friendly:
-- one Python orchestrator
-- small tools
-- lightweight memory/state
-- clear file structure
-
-This is **not** a complex multi-agent system.  
-It is a practical first step into agentic AI.
 
 ---
 
@@ -105,15 +68,6 @@ It is a practical first step into agentic AI.
   - base + RAG
   - tuned + RAG
 
-### Agentic features
-
-- intent classification
-- simple tool-based workflow
-- lightweight conversation state
-- summarization support
-- escalation stub
-- evaluation scenarios for agent behavior
-
 ---
 
 ## Who this repo is for
@@ -127,7 +81,6 @@ This repo is useful for:
   - embeddings
   - vector search
   - retrieval
-  - agentic orchestration
 - anyone who wants a small, readable AI engineering project
 
 ---
@@ -142,13 +95,12 @@ This repo is useful for:
 | Vector database | ChromaDB |
 | Language | Python |
 | Platform | macOS Apple Silicon |
-| Agent layer | simple Python orchestration |
 
 ---
 
 ## Project idea in one sentence
 
-This project builds a **fictional AcornDesk support assistant** that answers from local FAQ documents, speaks in a support tone, and evolves from plain RAG into a small agentic RAG workflow.
+This project builds a fictional support assistant that answers from local FAQ documents and speaks in a support tone.
 
 ---
 
@@ -162,9 +114,7 @@ Everything below is included so a new user can clone and run the project quickly
 | Training data | `data/support/*.jsonl` | Re-train or study the fine-tuning format |
 | FAQ documents | `docs/faqs/*.txt` | Knowledge base for retrieval |
 | Eval prompts | `data/eval/test_prompts.txt` | Four-mode evaluation |
-| Agent scenarios | `data/eval/agent_scenarios.json` | Agent behavior tests |
 | Scripts | `scripts/` | Index, query, evaluate |
-| Agent code | `agent/` | Routing, tools, memory, orchestration |
 
 ### Not stored in GitHub
 
@@ -227,8 +177,8 @@ This is the fastest path.
 ### 1. Clone the repo
 
 ```bash
-git clone https://github.com/purvender/apple-silicon-agentic-rag-support-assistant.git
-cd apple-silicon-agentic-rag-support-assistant
+git clone https://github.com/purvender/apple-silicon-lora-rag-support-assistant.git
+cd apple-silicon-lora-rag-support-assistant
 ```
 
 ### 2. Set up environment
@@ -254,17 +204,10 @@ python scripts/rag_index.py
 python scripts/rag_query.py "Can I get a refund for my annual plan?"
 ```
 
-### 5. Ask a question with the agent workflow
-
-```bash
-python scripts/agent_chat.py "I did not receive my password reset email"
-```
-
-### 6. Run quick checks
+### 5. Run quick checks
 
 ```bash
 bash scripts/smoke_test.sh
-python scripts/eval_agent.py
 ```
 
 ---
@@ -282,7 +225,6 @@ Run:
 ```bash
 python scripts/rag_index.py
 python scripts/rag_query.py "Can I get a refund for my annual plan?"
-python scripts/agent_chat.py "I forgot my password and the reset email is not coming."
 ```
 
 Use this path if you want to:
@@ -352,45 +294,6 @@ This is the **plain RAG support assistant**.
 
 ---
 
-## How the agentic layer works
-
-This is the upgraded flow:
-
-```text
-User question
-   -> classify the intent
-   -> choose which tool to use
-   -> maybe retrieve FAQ context
-   -> maybe summarize the conversation
-   -> maybe ask for clarification
-   -> maybe escalate
-   -> draft final response
-```
-
-### Example intents
-
-The system can classify a question as:
-
-- `knowledge_base`
-- `troubleshooting`
-- `policy_process`
-- `escalation`
-- `summarization`
-- `unknown`
-
-### Example tools
-
-The simple Python agent can call tools like:
-
-- `retrieve_kb(query)`
-- `classify_intent(query, history)`
-- `summarize_conversation(history)`
-- `search_similar_issues(query)`
-- `escalate_to_human(reason, summary)`
-- `draft_final_response(context)`
-
----
-
 ## Why we use both fine-tuning and RAG
 
 These two things solve different problems.
@@ -405,15 +308,12 @@ Simple rule:
 - **Fine-tuning** teaches the model **how to answer**
 - **RAG** provides the content for **what to answer**
 
-The agent layer adds:
-- **what to do next**
-
 ---
 
 ## Project structure
 
 ```text
-apple-silicon-agentic-rag-support-assistant/
+apple-silicon-lora-rag-support-assistant/
 ├── README.md
 ├── LICENSE
 ├── CONTRIBUTING.md
@@ -426,8 +326,7 @@ apple-silicon-agentic-rag-support-assistant/
 │   │   └── test.jsonl
 │   └── eval/
 │       ├── test_prompts.txt
-│       ├── expected_sources.jsonl
-│       └── agent_scenarios.json
+│       └── expected_sources.jsonl
 ├── docs/
 │   ├── LEARNING.md
 │   ├── TROUBLESHOOTING.md
@@ -441,21 +340,11 @@ apple-silicon-agentic-rag-support-assistant/
 │       ├── cancellation.txt
 │       ├── team_permissions.txt
 │       └── support.txt
-├── agent/
-│   ├── __init__.py
-│   ├── types.py
-│   ├── memory.py
-│   ├── prompts.py
-│   ├── router.py
-│   ├── tools.py
-│   └── orchestrator.py
 ├── scripts/
 │   ├── mlx_utils.py
 │   ├── rag_index.py
 │   ├── rag_query.py
-│   ├── agent_chat.py
 │   ├── eval_compare.py
-│   ├── eval_agent.py
 │   ├── check_retrieval.py
 │   └── smoke_test.sh
 ├── adapters-llama3-1b/
@@ -470,28 +359,16 @@ apple-silicon-agentic-rag-support-assistant/
 Builds the ChromaDB vector index from the FAQ text files.
 
 ### `scripts/rag_query.py`
-Runs the original plain RAG assistant.
-
-### `scripts/agent_chat.py`
-Runs the upgraded agentic workflow.
+Runs the plain RAG assistant.
 
 ### `scripts/eval_compare.py`
 Compares base vs tuned vs RAG combinations.
 
-### `scripts/eval_agent.py`
-Runs simple tests for the agent flow.
+### `scripts/check_retrieval.py`
+Checks retrieval quality quickly without full generation.
 
-### `agent/router.py`
-Decides what kind of request the user has.
-
-### `agent/tools.py`
-Contains the small tool functions the agent can call.
-
-### `agent/memory.py`
-Stores lightweight conversation state.
-
-### `agent/orchestrator.py`
-Main controller for the agent workflow.
+### `scripts/smoke_test.sh`
+Runs a quick local validation.
 
 ---
 
@@ -533,23 +410,6 @@ Use this mode if you want:
 
 ---
 
-## Agent usage
-
-Ask a support question through the agent layer:
-
-```bash
-python scripts/agent_chat.py "I tried resetting my password twice and still didn't get the email."
-```
-
-Use this mode if you want:
-- intent detection,
-- routing,
-- summarization,
-- basic escalation behavior,
-- more realistic support workflows.
-
----
-
 ## Evaluation
 
 ## Four-mode comparison
@@ -578,20 +438,6 @@ This checks retrieval quality quickly without full generation:
 python scripts/check_retrieval.py
 ```
 
-## Agent evaluation
-
-This checks whether the agent chooses the expected intent for simple scenarios:
-
-```bash
-python scripts/eval_agent.py
-```
-
-Example scenario types:
-- FAQ question
-- troubleshooting issue
-- escalation request
-- summary request
-
 ---
 
 ## Beginner learning path
@@ -616,20 +462,12 @@ python scripts/rag_query.py "Can I get a refund for my annual plan?"
 ```
 
 ### Step 4
-Run the agent:
-
-```bash
-python scripts/agent_chat.py "I want to talk to a human about my billing issue."
-```
-
-### Step 5
 Read these files in this order:
 
 1. `scripts/rag_index.py`
 2. `scripts/rag_query.py`
-3. `agent/router.py`
-4. `agent/tools.py`
-5. `agent/orchestrator.py`
+3. `scripts/check_retrieval.py`
+4. `scripts/eval_compare.py`
 
 That order makes the architecture easier to understand.
 
@@ -639,39 +477,23 @@ That order makes the architecture easier to understand.
 
 Originally, this project was mainly a **local LoRA + RAG support assistant**.
 
-Now it is being upgraded into a **local agentic RAG support assistant**.
+Now it is being prepared for a future **agentic RAG** upgrade.
 
-### Old version
+### Current version
 - retrieve FAQ
 - answer using retrieved context
 
-### New version
+### Planned next version
 - understand request type
 - choose next action
 - retrieve / summarize / escalate / clarify
 - then answer
 
-This is the key evolution in the repository.
+This future agentic layer is **not yet implemented** in the current repo.
 
 ---
 
-## Limitations
-
-This project is intentionally small and beginner-friendly.
-
-Current limitations:
-
-- fictional support domain only
-- simple local documents only
-- lightweight agent logic
-- no real ticketing backend
-- no production authentication or web UI
-- escalation is a stub, not a real helpdesk integration
-- retrieval is intentionally simple for learning clarity
-
----
-
-## Future improvements
+## Planned future improvements
 
 Possible next steps:
 
@@ -680,7 +502,7 @@ Possible next steps:
 - real issue history search
 - real ticket system integration
 - web UI or API layer
-- LangGraph migration for larger workflows
+- agentic workflow with routing and tools
 - richer evaluation metrics
 - multi-turn troubleshooting flows
 
